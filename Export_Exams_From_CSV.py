@@ -153,13 +153,13 @@ def Export_to_path(path):
                                    e.EquipmentInfo.FrameOfReference == to_for]
         # Find all examinations with frame of reference that matches 'from_for'.
                 from_examinations = [e for e in case.Examinations if e.EquipmentInfo.FrameOfReference == from_for]
-                out_path = os.path.join(path,MRN,case.CaseName,'Registration',from_examinations[0].Name)
+                exam_names = ["%s:%s" % (for_registration.RegistrationSource.ToExamination.Name, for_registration.RegistrationSource.FromExamination.Name)]
+                out_path = os.path.join(path,MRN,case.CaseName,'Registration', for_registration.RegistrationSource.FromExamination.Name)
                 if not os.path.exists(out_path):
                     os.makedirs(out_path)
                 try:
                     case.ScriptableDicomExport(ExportFolderPath=out_path,
-                                               SpatialRegistrationForExaminations=["%s:%s" % (to_examinations[0].Name,
-                                                                                              from_examinations[0].Name)],
+                                               SpatialRegistrationForExaminations=exam_names,
                                                IgnorePreConditionWarnings=True)
                 except:
                     continue
