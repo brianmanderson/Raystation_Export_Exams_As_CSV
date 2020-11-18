@@ -41,7 +41,7 @@ def Export_Dicom(path,case,exam):
     if not os.path.exists(os.path.join(path,'Completed.txt')): # If it has been previously uploaded, don't do it again
         case.ScriptableDicomExport(ExportFolderPath=path,Examinations=[], RtStructureSetsForExaminations=[exam.Name])
         case.ScriptableDicomExport(ExportFolderPath=path, Examinations=[exam.Name],
-                                        RtStructureSetsForExaminations=[])
+                                   RtStructureSetsForExaminations=[])
     return None
 
 
@@ -90,9 +90,10 @@ def Export_to_path(path):
         '''
         for case in patient.Cases:
             for exam in case.Examinations:
-                out_path_export = os.path.join(path, MRN, case.CaseName, exam.Name) # case.CaseName,
-                if not os.path.exists(out_path_export):
-                    Export_Dicom(path=out_path_export, case=case, exam=exam)
+                if exam.Name in data[MRN]:
+                    out_path_export = os.path.join(path, MRN, case.CaseName, exam.Name)
+                    if not os.path.exists(out_path_export):
+                        Export_Dicom(path=out_path_export, case=case, exam=exam)
 
 
 def main():
